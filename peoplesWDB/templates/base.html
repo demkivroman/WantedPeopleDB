@@ -4,14 +4,17 @@
 <head>
   <meta charset="utf-8">
 <title>Database of lost people</title>
-  <meta name="keywords" content="people,wanted,lost,database,find people">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="people,wanted,lost,database,find people"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name = "description" value = "Database of lost people" />
-  <meta name="author" content="Roman Demkiv">
+  <meta name="author" content="Roman Demkiv"/>
 
-<!-- Style inclusion -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
+<!-- Boostrap inclusion -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 <!-- Main.css inclusion -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
@@ -19,10 +22,28 @@
 
 <body>
 
-<h1>Wanted peoples</h1>
-<!-- Javascript Inclusions -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class = "container">
+    <div class = "row" id = "head">
+        <div class = "col-sm-10">
+          <h2>
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          Database of wanted people
+          </h2>
+        </div>
+        <div class = "col-sm-2" style="text-align:right">
+           <div class = "langswitcher">
+           <a href="#">en</a> /
+           <a href="#">uk</a> /
+           <a href="#">ru</a>
+           </div>
+        </div>
+    </div>
+</div>
 
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
