@@ -14,14 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage 
-from peoplesWDB.views.formsviews import AddPersonForm, ContactForm
+from peoplesWDB.views.formsviews import ContactForm
+from peoplesWDB.views import formsviews
 
 from django.conf.urls import url
 from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', HomePageView.as_view(), name = 'home'),
-    url(r'^add/$', AddPersonForm.as_view(), name = 'add_person'),
+    url(r'^add/$', formsviews.add_wanted_person, name = 'add_person'),
     url(r'^contact/$', ContactForm.as_view(), name = 'contact'),
     url(r'^help/$', HelpPage.as_view(), name = 'help'),
     url(r'^about/us/$', AboutUsPage.as_view(), name = 'about_us'),

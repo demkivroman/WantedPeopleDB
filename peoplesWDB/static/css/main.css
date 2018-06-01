@@ -55,8 +55,18 @@ margin-top: 25px;
 
 #footer{
 margin-top: 15%;
+padding: 20px;
 }
 
 #footer div a{
    text-align: right;
 }
+
+.form td{
+    padding: 5px;
+}
+#workzone{
+    background-color: #f3f3f3;
+    padding: 15px;
+}
+
