@@ -66,9 +66,17 @@
     <div class = "row" id = "status_menu">
         <div class = "col-sm-12">
         {% block status_message %}
+             {% if messages %}
+                   <ul class="messages">
+                   {% for message in messages %}
+                   <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h4>{{ message }}</h4></li>
+                   {% endfor %}
+                   </ul>
+             {% endif %}
         {% endblock status_message%}    
         </div>
     </div>
+
 <div id = "workzone">
 {% block content %}
    <div class = "row" id = "search">

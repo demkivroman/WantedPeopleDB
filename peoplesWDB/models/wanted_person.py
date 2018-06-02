@@ -21,6 +21,7 @@ class WantedPerson(models.Model):
 
     birthday = models.DateField(
         blank = True,
+        null = True,
         verbose_name = "Birthday")
 
     phone = models.CharField(
