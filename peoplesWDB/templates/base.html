@@ -67,11 +67,11 @@
         <div class = "col-sm-12">
         {% block status_message %}
              {% if messages %}
-                   <ul class="messages">
+                   <div class="messages">
                    {% for message in messages %}
-                   <li{% if message.tags %} class="{{ message.tags }}"{% endif %}><h4>{{ message }}</h4></li>
+                  <h4><span class="glyphicon glyphicon-ok"></span>  {{ message }}</h4></li>
                    {% endfor %}
-                   </ul>
+                   </div>
              {% endif %}
         {% endblock status_message%}    
         </div>
