@@ -7,6 +7,8 @@ from django.contrib import messages
 
 from ..models.wanted_person import WantedPerson
 
+import pdb
+
 class AddPersonForm(TemplateView):
     template_name = "forms/add_form.html"
 
@@ -23,7 +25,11 @@ def add_wanted_person(request):
             data['first_name'] = request.POST.get('first_name').strip()
             data['last_name'] = request.POST.get('last_name').strip()
             data['photo'] = request.FILES.get('photo')
-            data['birthday'] = request.POST.get('birthday').strip()
+            birthday = request.POST.get('birthday').strip()
+            if not birthday:
+                data['birthday'] = None
+            else:
+                data['birthday'] = request.POST.get('birthday').strip()
             data['phone'] = request.POST.get('phone').strip()
             data['email'] = request.POST.get('email').strip()
             data['note'] = request.POST.get('note').strip()
