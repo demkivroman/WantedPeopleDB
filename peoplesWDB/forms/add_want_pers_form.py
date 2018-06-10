@@ -1,14 +1,13 @@
 from django.forms import ModelForm
 from ..models.wanted_person import WantedPerson
+from django import forms
 
 class AddWanPerson(ModelForm):
-    def clean_first_name(self):
-        data = self.cleaned_data['first_name']
-        if not data:
-            raise ValidationError('Field is required')
-
-        return data
-
     class Meta:
         model = WantedPerson
         fields = '__all__'
+        widgets = {
+            'note': forms.Textarea(attrs={'cols': 40, 'rows': 5}),
+            'email': forms.EmailInput(attrs={'size': 30}),
+            'phone': forms.TextInput(attrs={'size': 25})
+        }

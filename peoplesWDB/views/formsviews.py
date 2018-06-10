@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.contrib import messages
 
 from ..models.wanted_person import WantedPerson
+from ..util.util_func import util_main_searc
 
 import pdb
 
@@ -32,6 +33,8 @@ def add_wanted_person(request):
                 data['birthday'] = request.POST.get('birthday').strip()
             data['phone'] = request.POST.get('phone').strip()
             data['email'] = request.POST.get('email').strip()
+            data['country'] = request.POST.get('country').strip()
+            data['city'] = request.POST.get('city').strip()
             data['note'] = request.POST.get('note').strip()
             # create and save person object
             person = WantedPerson(**data)
@@ -44,3 +47,14 @@ def add_wanted_person(request):
     else:
         form = AddWanPerson()
         return render(request, 'forms/add_form.html', {'form':form})
+
+# function of searching in database
+def db_search(request):
+    data = request.GET['mainsearch'].strip()
+    if data:
+        search_result = util_main_searc(data)
+        if not search_result:
+            messages.warning(request, 'No results')
+    else:
+        return HttpResponseRedirect(reverse('home'))
+    return render(request, 'search_result.html', {'search_result': search_result})

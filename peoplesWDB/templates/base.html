@@ -18,6 +18,8 @@
 
 <!-- Main.css inclusion -->
 <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}" />
+{% block style %}
+{% endblock style %}
 </head>
 
 <body>
@@ -82,8 +84,8 @@
    <div class = "row" id = "search">
         <div class = "col-sm-12">
            <nav class="navbar navbar-light bg-light">
-             <form class = "form-inline" id = "main_search">
-               <input class="form-control mr-sm-2" type="text" placeholder="Search">
+             <form action="{% url 'search' %}" method="GET" class = "form-inline" id = "main_search" >
+               <input class="form-control mr-sm-2" type="text" name="mainsearch" placeholder="Enter information about wanted person">
                <button class="btn" type="submit">
                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                </button>

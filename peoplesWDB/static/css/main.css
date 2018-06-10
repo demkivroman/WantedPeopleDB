@@ -41,7 +41,11 @@ margin-top: 25px;
 
 #main_search input, select, textarea{
   color: #333;
-  font-weight: 900;
+  font-weight: 100;
+}
+#main_search2 input, select, textarea{
+   width: 50%;
+   padding: 12px 20px;
 }
 
 .btn{

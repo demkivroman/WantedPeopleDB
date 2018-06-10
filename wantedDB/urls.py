@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^contact/$', ContactForm.as_view(), name = 'contact'),
     url(r'^help/$', HelpPage.as_view(), name = 'help'),
     url(r'^about/us/$', AboutUsPage.as_view(), name = 'about_us'),
+    url(r'^search/$', formsviews.db_search, name = 'search'),
     url(r'^admin/', admin.site.urls),
 ]
