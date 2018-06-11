@@ -16,6 +16,8 @@ Including another URLconf
 from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage 
 from peoplesWDB.views.formsviews import ContactForm
 from peoplesWDB.views import formsviews
+from django.conf import settings
+from django.views.static import serve
 
 from django.conf.urls import url
 from django.contrib import admin
@@ -29,3 +31,10 @@ urlpatterns = [
     url(r'^search/$', formsviews.db_search, name = 'search'),
     url(r'^admin/', admin.site.urls),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {
+            'document_root': settings.MEDIA_ROOT,
+        }),
+    ]

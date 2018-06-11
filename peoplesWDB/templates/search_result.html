@@ -9,10 +9,14 @@
     text-align: left;
     }
     img{
+    border-radius: 8px;
     filter: grayscale(100%);
     }
     .td_photo{
     width: 80px;
+    }
+    .comment{
+    width: 100%;
     }
 </style>
 {% endblock style %}
@@ -29,16 +33,19 @@
         </div>
         <div class = "col-sm-12">
             {% if search_result %}
+                <form action="" method="post" enctype="multipart/form-data" role = "form" 
+                 class = "form-horizontal" id = "comment">
                 <table style="width: 50%">
                     {% for person in search_result %}
                        <tr>
                           <td class = " td_photo">
                           {% if person.photo %}
                           <a href = "{{person.photo.url}}">
-                          <img height = "80" width = "80" class="w3-grayscale" src = "{{person.photo.url}}">
+                          <img height = "100" width = "100" class="w3-grayscale" 
+                          src = "{{person.photo.url}}">
                           </a>
                           {% else %}
-                          <img height = "80" width = "80" class="w3-grayscale" 
+                          <img height = "100" width = "100" class="w3-grayscale" 
                           src = "{% static 'img/generic-man.png'%}">
                           {% endif%}
                           </td>
@@ -59,12 +66,20 @@
                           </td>
                        </tr>
                        {% if person.note %}
-                       <tr>
-                          <td colspan = "2" style="padding-top:0px">{{person.note}}</td>
-                       </tr>
+                          <tr><td colspan = "2" style="padding-top:0px">
+                          <strong>Note: </strong>{{person.note}}
+                          </td>
+                          </tr>
                        {% endif %}
+                       <tr>
+                         <td style="padding-top:0px;">
+                         <a href="#" class="badge badge-secondary">Add comment</a>
+                         </td>
+                         <td style="border-right: 1px solid #d0d0d0;border-bottom: 1px solid #d0d0d0;"></td>
+                       </tr>
                     {% endfor %}
                 </table>
+                </form>
             {% endif %}
         </div>
 </div>
