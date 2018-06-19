@@ -18,6 +18,7 @@ from peoplesWDB.views.formsviews import ContactForm
 from peoplesWDB.views import formsviews
 from django.conf import settings
 from django.views.static import serve
+from django.conf.urls import include
 
 from django.conf.urls import url
 from django.contrib import admin
@@ -30,6 +31,9 @@ urlpatterns = [
     url(r'^about/us/$', AboutUsPage.as_view(), name = 'about_us'),
     url(r'^search/$', formsviews.db_search, name = 'search'),
     url(r'^admin/', admin.site.urls),
+
+    # urls for authentications
+    url(r'^accounts/', include('allauth.urls'), name = 'login'),
 ]
 
 if settings.DEBUG:
