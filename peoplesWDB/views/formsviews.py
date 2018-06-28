@@ -1,9 +1,12 @@
 from django.views.generic.base import TemplateView
 from ..forms.add_want_pers_form import AddWanPerson
+from ..forms.contact_form import ContactForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.contrib import messages
+from django.core.mail import send_mail
+from wantedDB.settings import ADMIN_EMAIL
 
 from ..models.wanted_person import WantedPerson
 from ..util.util_func import util_main_searc
@@ -14,8 +17,26 @@ class AddPersonForm(TemplateView):
     template_name = "forms/add_form.html"
 
 
-class ContactForm(TemplateView):
-    template_name = "forms/contact_form.html"
+def contact_form(request):
+    if request.method == 'POST':
+        if request.POST.get('cancel_button') is not None:
+            return HttpResponseRedirect(reverse('contact'))
+        if request.POST.get('send_button') is not None:
+            sender = request.POST.get('sender').strip()
+            message = request.POST.get('message').strip()
+            try:
+                send_mail(sender,message,sender,[ADMIN_EMAIL])
+            except Exception:
+                message = "Error. Message is not sent. Try again later"
+                messages.warning(request, message)
+                return HttpResponseRedirect(reverse('contact'))
+            else:
+                message = "Message sent successfully"
+                messages.info(request,message)
+                return HttpResponseRedirect(reverse('home'))
+    else:
+        form = ContactForm()
+        return render(request, 'forms/contact_form.html', {'form': form})
 
 def add_wanted_person(request):
     if request.method == 'POST':
@@ -46,7 +67,7 @@ def add_wanted_person(request):
          
     else:
         form = AddWanPerson()
-        return render(request, 'forms/add_form.html', {'form':form})
+        return render(request, 'forms/add_form.html', {'form':form, 'admin': ADMIN_EMAIL})
 
 # function of searching in database
 def db_search(request):

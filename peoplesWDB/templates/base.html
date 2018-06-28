@@ -27,27 +27,25 @@
 <div class = "container" >
 
     <div class = "row" id = "head">
-        <div class = "col-sm-8">
+        <div class = "col-sm-7">
           <h2>
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           <b>Database of wanted people</b>
           </h2>
         </div>
-        <div class = "col-sm-2">
+        <div class = "col-sm-3">
+            <div style = "padding-top: 30px;text-align:right">
         {% if user.is_authenticated %} 
-        <div style = "margin-top: 25px;text-align:right">
-        <a href = "" style="">
+        <a href = "">
         <span>{{user.username}}</span> 
         </a> | 
         <a href = "{% url 'account_logout' %}">Logout</a>
-        </div>
         {% else %}
-        <div style = "margin-top: 25px;text-align:right">
         <a href = "{% url 'account_login' %}">Login</a> | 
         <a href = "{% url 'account_signup' %}">Register</a>
-        </div>
         {% endif %}
+            </div>
         </div>
         <div class = "col-sm-2" style="text-align:right">
            <div class = "langswitcher">
@@ -100,6 +98,7 @@
         <div class = "col-sm-12">
            <nav class="navbar navbar-light bg-light">
              <form action="{% url 'search' %}" method="GET" class = "form-inline" id = "main_search" >
+               {% csrf_token %}
                <input class="form-control mr-sm-2" type="text" name="mainsearch" placeholder="Enter information about wanted person">
                <button class="btn" type="submit">
                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
@@ -118,7 +117,6 @@
 {% endblock footer%}
 </div>
 </div>
-
 
 
 <!-- Latest compiled and minified JavaScript -->

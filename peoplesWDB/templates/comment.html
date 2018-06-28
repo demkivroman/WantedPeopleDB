@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
-{% block title %} Results {% endblock title%}
+{% block title %} Comments {% endblock title%}
 {% block style %}
 <style>
     td{
@@ -21,20 +21,8 @@
 </style>
 {% endblock style %}
 {% block content %}
-
-<div class = "row" id = "results">
-        <div class = "col-sm-12">
-           <nav class="navbar navbar-light bg-light">
-             <form action="{% url 'search' %}" method="GET" class = "form-inline" id = "main_search2">
-               <input class="form-control mr-sm-2" type="text" name="mainsearch" placeholder=
-               "Enter information about wanted person">
-             </form>
-           </nav>
-        </div>
-        <div class = "col-sm-12">
-            {% if search_result %}
+    <div class = "col-sm-12">
                 <table style="width: 50%">
-                    {% for person in search_result %}
                        <tr>
                           <td class = " td_photo">
                           {% if person.photo %}
@@ -69,28 +57,18 @@
                           </td>
                           </tr>
                        {% endif %}
-                       <tr>
-                         <td style="padding-top:0px;">
-                         <a href="{% url 'comment' person.id %}" class="badge badge-secondary">
-                           Add comment</a>
-                         </td>
-                         <td style="border-bottom: 1px solid #d0d0d0;">
-                         </td>
-                       </tr>
-                    {% endfor %}
                 </table>
-                
-            {% endif %}
         </div>
-</div>
 
-
+    <div class = "col-sm-12">
+           <nav class="navbar navbar-light bg-light">
+             <form action="{% url 'search' %}" method="POST" class = "form-inline" id = "comment_form">
+               {% csrf_token %}
+                <textarea rows="2" cols="50" class="form-control mr-sm-2" name="comment_form_field"
+                autofocus placeholder="Type comment">
+               </textarea> 
+             </form>
+           </nav>
+    </div>
+   
 {% endblock content %}
-
-{% block footer %}
-<div class = "row" style="margin-top: 20px">
-       <div class = "col-sm-12">
-          <span class = "glyphicon glyphicon-copyright-mark"> </span> 2018 wanted R.D
-       </div>
-</div>
-{% endblock footer %}

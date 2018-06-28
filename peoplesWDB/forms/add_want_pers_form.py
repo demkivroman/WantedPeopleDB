@@ -7,7 +7,7 @@ class AddWanPerson(ModelForm):
         model = WantedPerson
         fields = '__all__'
         widgets = {
-            'note': forms.Textarea(attrs={'cols': 40, 'rows': 5}),
+            'note': forms.Textarea(attrs={'cols': 80, 'rows': 5}),
             'email': forms.EmailInput(attrs={'size': 30}),
             'phone': forms.TextInput(attrs={'size': 25})
         }

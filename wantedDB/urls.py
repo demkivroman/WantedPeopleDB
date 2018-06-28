@@ -14,8 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage 
-from peoplesWDB.views.formsviews import ContactForm
-from peoplesWDB.views import formsviews
+from peoplesWDB.views import formsviews, siteviews
 from django.conf import settings
 from django.views.static import serve
 from django.conf.urls import include
@@ -26,10 +25,11 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^$', HomePageView.as_view(), name = 'home'),
     url(r'^add/$', formsviews.add_wanted_person, name = 'add_person'),
-    url(r'^contact/$', ContactForm.as_view(), name = 'contact'),
+    url(r'^contact/$', formsviews.contact_form, name = 'contact'),
     url(r'^help/$', HelpPage.as_view(), name = 'help'),
     url(r'^about/us/$', AboutUsPage.as_view(), name = 'about_us'),
     url(r'^search/$', formsviews.db_search, name = 'search'),
+    url(r'^comment/(?P<pk>\d+)$', siteviews.comment_add, name = 'comment'),
     url(r'^admin/', admin.site.urls),
 
     # urls for authentications
