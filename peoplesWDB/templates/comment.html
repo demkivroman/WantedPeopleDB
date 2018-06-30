@@ -21,8 +21,8 @@
 </style>
 {% endblock style %}
 {% block content %}
-    <div class = "col-sm-12">
-                <table style="width: 50%">
+    <div class = "col-sm-6">
+                <table>
                        <tr>
                           <td class = " td_photo">
                           {% if person.photo %}
@@ -58,17 +58,24 @@
                           </tr>
                        {% endif %}
                 </table>
-        </div>
 
-    <div class = "col-sm-12">
            <nav class="navbar navbar-light bg-light">
              <form action="{% url 'search' %}" method="POST" class = "form-inline" id = "comment_form">
                {% csrf_token %}
-                <textarea rows="2" cols="50" class="form-control mr-sm-2" name="comment_form_field"
-                autofocus placeholder="Type comment">
-               </textarea> 
+             <input id = "comment_field" class = "ClickFormBorder" type="text" name="comment" 
+             autofocus placeholder = "type comment" style = "height: 2em;width:50%">
              </form>
            </nav>
+        </div>
+<!-- Zone for comments -->
+    <div class = "col-sm-6">
+    <h4 style = "text-decoration: underline">Comments:</h4>
     </div>
-   
 {% endblock content %}
+{% block footer %}
+   <div class = "row" id = "footer">
+       <div class = "col-sm-12">
+          <span class = "glyphicon glyphicon-copyright-mark"> </span> 2018 wanted R.D
+       </div>
+   </div>
+{% endblock footer%}

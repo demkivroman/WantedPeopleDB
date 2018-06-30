@@ -1,4 +1,6 @@
 from django.db import models
+from ..models import WantedPerson
+from django.contrib.auth.models import User
 
 class Comment(models.Model):
 
@@ -10,5 +12,10 @@ class Comment(models.Model):
         blank = False,
         verbose_name = "comment_date")
 
-    comments = models.ForeignKey('WantedPerson', 
-        on_delete=models.CASCADE)
+    comments = models.ForeignKey(WantedPerson,
+        null = True, 
+        on_delete=models.SET_NULL)
+
+    user = models.ForeignKey(User,
+        null = True,
+        on_delete = models.SET_NULL)
