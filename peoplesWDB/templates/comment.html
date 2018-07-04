@@ -18,9 +18,18 @@
     .comment{
     width: 100%;
     }
+    #comment_field{
+    width: 60%;
+    border: 1px solid grey;
+    border-radius: 6px;
+    padding: 5px;
+    padding-bottom: 0px;
+    }
+
 </style>
 {% endblock style %}
 {% block content %}
+<div>
     <div class = "col-sm-6">
                 <table>
                        <tr>
@@ -59,18 +68,24 @@
                        {% endif %}
                 </table>
 
-           <nav class="navbar navbar-light bg-light">
-             <form action="{% url 'search' %}" method="POST" class = "form-inline" id = "comment_form">
+             <form action="#" method="POST" class = "form-inline" id = "comment_form">
                {% csrf_token %}
-             <input id = "comment_field" class = "ClickFormBorder" type="text" name="comment" 
-             autofocus placeholder = "type comment" style = "height: 2em;width:50%">
+             <div id="comment_div">
+             <textarea id = "comment_field" rows = "1" oninput = "formAutoResize(this)"
+             placeholder = "type comment" autofocus> 
+             </textarea> 
+             <p style = "text-align:left;padding:5px;width:60%;">
+                <a href = "#" id = "send_coment" onclick="test()">Send</a>
+             </p>
+             </div>
              </form>
-           </nav>
+            <p id = "demo"></p>
         </div>
 <!-- Zone for comments -->
     <div class = "col-sm-6">
     <h4 style = "text-decoration: underline">Comments:</h4>
     </div>
+</div>
 {% endblock content %}
 {% block footer %}
    <div class = "row" id = "footer">
