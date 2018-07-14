@@ -71,7 +71,10 @@
                        {% endif %}
                        <tr>
                          <td style="padding-top:0px;">
-                         <a href="{% url 'comment' person.id %}" class="badge badge-secondary">
+                         <a {% if user.is_authenticated %} href="{% url 'comment' person.id %}"
+                         {% else %} href = "{% url 'account_signup' %}"
+                         {% endif %}
+                          class="badge badge-secondary">
                            Add comment</a>
                          </td>
                          <td style="border-bottom: 1px solid #d0d0d0;">
