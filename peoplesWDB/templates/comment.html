@@ -73,8 +73,9 @@
                 </table>
 
             <!--  <form action = "" method = "post" class = "form-inline" id = "comment_form"> -->
-              
+             {% if user.is_authenticated %}
              <div id="comment_div">
+             <p id = "error" style="color: grey;padding-left:10px;"></p>
              <textarea id = "comment_field" rows = "1" oninput = "formAutoResize(this)"
              placeholder = "type comment" autofocus> 
              </textarea> 
@@ -85,6 +86,12 @@
                  id = "send_coment">Send</a>
              </p>
              </div>
+             {% else %}
+             <div id = "comment_div" style="padding-left:15px;">
+             <a href = "{% url 'account_signup' %}" class="badge badge-secondary">Add comment</a>
+             </div>
+             {% endif %}
+
        <!--      </form> -->
             <p id = "demo"></p>
         </div>

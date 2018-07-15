@@ -18,6 +18,11 @@ function commentSend(){
 $("#send_coment").click(function(event){
       var val = $(this);
       var comment = $("#comment_field").val().trim();
+     if (comment == ""){
+          $("#error").html("<b>Please, input data</b>");
+          return(false);
+      }
+
         $.ajax({
                   url: this.href,
                   type: 'post',
@@ -32,6 +37,7 @@ $("#send_coment").click(function(event){
                             commentGet(val.data('url-for-get'));
                             $("#comment_field").val("");
                             $("#comment_field").attr("rows","1");
+                            $("#error").text("");
                             //alert(data);
                            }
                });
@@ -57,5 +63,4 @@ function commentGet(ob_url){
 
 $(document).ready(function(){
 commentSend();
-commentGet();
 });
