@@ -32,10 +32,13 @@ urlpatterns = [
     url(r'^search/$', formsviews.db_search, name = 'search'),
     url(r'^comment/(?P<pk>\d+)$', CommentSave.as_view(), name = 'comment'),
     url(r'^ajax/comment/save/$',CommentSave.as_view(), name = 'comment_save'),
+    url(r'^signup/$',siteviews.signup_addphoto, name = 'sign_up'),
     url(r'^admin/', admin.site.urls),
-
     # urls for authentications
     url(r'^accounts/', include('allauth.urls'), name = 'login'),
+
+    # urls for encrypt
+    # url(r'^\.well-known/', include('letsencrypt.urls'), name = 'detail'),
 ]
 
 if settings.DEBUG:

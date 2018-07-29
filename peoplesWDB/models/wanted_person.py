@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class WantedPerson(models.Model):
@@ -46,6 +47,11 @@ class WantedPerson(models.Model):
     note = models.TextField(
         blank = True,
         verbose_name = "Note")
+
+    user = models.ForeignKey(User, 
+        blank = True,
+        null = True,
+        on_delete=models.CASCADE)
 
 def __unicode__(self):
     return '%s' % (self.first_name)

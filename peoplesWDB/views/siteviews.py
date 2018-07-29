@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from ..models.wanted_person import WantedPerson
 from ..models.comment import Comment
@@ -32,3 +34,7 @@ class CommentSave(TemplateView):
         context['comments_list'] = Comment.objects.filter(comments=person)
         """pdb.set_trace()"""
         return context
+
+def signup_addphoto(request):
+    pdb.set_trace()
+    return redirect('account_signup')

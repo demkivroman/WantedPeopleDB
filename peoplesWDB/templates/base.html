@@ -68,7 +68,7 @@
                 <a class="nav-link" href="{% url 'contact' %}"><b>Contact</b></a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'help' %}"><b>Help</b></a>
+                <a class="nav-link" href="{% url 'help' %}"><b>Donate</b></a>
                 </li>
              </ul>
         </div> 
@@ -98,7 +98,8 @@
            <nav class="navbar navbar-light bg-light">
              <form action="{% url 'search' %}" method="GET" class = "form-inline" id = "main_search" >
                {% csrf_token %}
-               <input class="form-control mr-sm-2" type="text" name="mainsearch" placeholder="Enter information about wanted person">
+               <input class="form-control" type="text" name="mainsearch"
+                 placeholder="Enter information about wanted person">
                <button class="btn" type="submit">
                <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                </button>

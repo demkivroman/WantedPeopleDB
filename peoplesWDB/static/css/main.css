@@ -6,6 +6,15 @@ body a{
     color: #333;
 }
 
+input{
+    border: 1px solid rgb(169, 169, 169);
+    border-radius: 4px;
+}
+textarea{
+   border: 1px solid rgb(169, 169, 169);
+   border-radius: 6px;
+}
+
 body a:hover{
    background-color: #333;
    padding: 5px;
@@ -31,7 +40,7 @@ padding-top: 30px;
 #main_search input{
    width: 50%;
    padding: 12px 20px;
-   border: 1px solid;
+   border: 1px solid rgb(169, 169, 169);
 }
 
 #main_search{
@@ -50,10 +59,11 @@ padding-top: 30px;
 
 .btn{
     background-color:white;
-    border: 1px solid;
+    border: 1px solid rgb(169, 169, 169);
+    color: rgb(169, 169, 169);
 }
 .btn:hover{
-   background-color:#333;
+   background-color:black;
    color:white;
 }
 

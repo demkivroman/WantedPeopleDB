@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.mail import send_mail
 from wantedDB.settings import ADMIN_EMAIL
+from django.contrib.auth.models import User
 
 from ..models.wanted_person import WantedPerson
 from ..util.util_func import util_main_searc
@@ -57,6 +58,9 @@ def add_wanted_person(request):
             data['country'] = request.POST.get('country').strip()
             data['city'] = request.POST.get('city').strip()
             data['note'] = request.POST.get('note').strip()
+            user = request.POST.get('user').strip()
+            if user:
+                data['user'] = User.objects.get(pk=user)
             # create and save person object
             person = WantedPerson(**data)
             person.save()
