@@ -60,7 +60,36 @@ function commentGet(ob_url){
           });
 }
 
+// Function add photo via link
+function addPhotoLink(){
+    $("#PhotoAddLink").click(function(){
+       $("#photoAdd").click();
+        return false;
+    });
+}
+
+function photoChange(){
+    $("#photoAdd").change(function(){
+        $("#profileForm").submit();
+/*
+       $.ajax({
+                  url: $("#PhotoAddLink").href,
+                  type: 'post',
+                  dataType: 'json',
+                  data: {
+                         photo: $("#photoAdd").val(),
+                         csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').prop('value')
+                         },
+                  success: function(data,status,xhr){
+                           }
+              });
+*/
+    });
+}
+
 
 $(document).ready(function(){
 commentSend();
+addPhotoLink();
+photoChange();
 });

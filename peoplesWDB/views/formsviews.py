@@ -1,6 +1,7 @@
 from django.views.generic.base import TemplateView
 from ..forms.add_want_pers_form import AddWanPerson
 from ..forms.contact_form import ContactForm
+from ..forms.profile import profilePhoto
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render

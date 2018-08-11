@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block title %} Profile {% endblock title%}
+{% block style %}
+<style>
+   #user_data{
+     margin-right: 20px;
+     margin-left: auto;
+     margin-top: 10px;
+   }
+   #user_data td{
+     padding: 10px;
+   }
+   #user_data a{
+     text-decoration: underline;
+   }
+   #user_data a:hover{
+    text-decoration: none;
+    color: black;
+    padding: 0px;
+    background-color: white;
+    font-weight: normal;
+   }
+   #photoAdd{
+       display: none;
+   }
+</style>
+{% endblock style %}
+{% block head %}
+    <div class = "row" id = "head">
+        <div class = "col-sm-6" style="margin-top: 20px;">
+          <h2>
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+          <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+          <b>Database of wanted people</b>
+          </h2>
+        </div>
+
+        <div class = "col-sm-6">
+           <table id = "user_data">
+               <tr>
+                  <td style = "text-align: center">
+                      {% if user_photo %}
+                         <img height = "70" width = "70" 
+                          style = "border-radius: 50%;filter: grayscale(100%);" 
+                          src = "{{user_photo.url}}">
+                       {% else %}
+                         <img height = "70" width = "70" 
+                          style = "border-radius: 50%;filter: grayscale(100%);" 
+                          src = "{% static 'img/generic-man.png'%}">
+                       {% endif %}
+                       <br>
+                       <form action="{% url 'user_profile' user.id %}" method="POST" id = "profileForm"
+                                      enctype="multipart/form-data">
+                       {% csrf_token %}
+                         {{profileForm.photo}}
+                       </form>
+                       <a href = "#" id = "PhotoAddLink"> change </a>
+                  </td>
+                  <td style = "vertical-align: top;">
+                    <b>{{ user.username }} </b></br>
+                    <b>{{ user.email }} </b>
+                  </td>
+               </tr>
+           </table>
+        </div>
+    </div>
+
+<div class = "row" id = "navbar">   
+        <div class = "col-sm-12">
+             <ul class="nav nav-tabs">
+                <li class="nav-item">
+                <a class="nav-link active" href="{% url 'home' %}"><b>Home</b></a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_person' %}"><b>Add</b></a>
+                </li>
+             </ul>
+        </div> 
+    </div>
+{% endblock head %}
+
+
+{% block content %}
+
+{% endblock content %}

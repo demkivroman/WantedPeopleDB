@@ -13,3 +13,4 @@ class AddWanPerson(ModelForm):
             'phone': forms.TextInput(attrs={'size': 25}),
             'birthday': forms.DateInput(attrs={'type': 'date'})
         }
+

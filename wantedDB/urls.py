@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage 
-from peoplesWDB.views.siteviews import CommentSave
+from peoplesWDB.views.siteviews import CommentSave, UserProfile
 from peoplesWDB.views import formsviews, siteviews
 from django.conf import settings
+from django.conf.urls.static import static
 from django.views.static import serve
 from django.conf.urls import include
 
@@ -33,17 +34,19 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)$', CommentSave.as_view(), name = 'comment'),
     url(r'^ajax/comment/save/$',CommentSave.as_view(), name = 'comment_save'),
     url(r'^signup/$',siteviews.signup_addphoto, name = 'sign_up'),
+    url(r'^user/profile/(?P<pk>\d+)$',UserProfile.as_view(), name = 'user_profile'),
     url(r'^admin/', admin.site.urls),
     # urls for authentications
     url(r'^accounts/', include('allauth.urls'), name = 'login'),
 
     # urls for encrypt
     # url(r'^\.well-known/', include('letsencrypt.urls'), name = 'detail'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
+
+"""if settings.DEBUG:
     urlpatterns += [
         url(r'^media/(?P<path>.*)$', serve, {
             'document_root': settings.MEDIA_ROOT,
         }),
-    ]
+    ]"""
