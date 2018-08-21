@@ -24,6 +24,44 @@
    #photoAdd{
        display: none;
    }
+   #workzone{
+       padding: 0px;
+       margin-top: 20px;
+       background-color: white;
+   }
+   .common_left{
+    width: 49.5%;
+    float: left;
+    background-color: #f3f3f3;
+    padding: 10px;
+    border: 1px solid #ddd;
+    }
+   .common_rigth{
+    width: 49.5%;
+    float: right;
+    background-color: #f3f3f3;
+    padding: 10px;
+    border: 1px solid #ddd;
+   }
+   .tab{
+    margin-top: 20px;
+    }
+    .popover{
+      max-width: 100%;
+     }
+    .popover img{
+        border-radius: 50%;
+        filter: grayscale(100%);
+        height: 70px;
+        width:70px;
+     }
+     .popover table td{
+        padding: 10px;
+      }
+     #status_menu{
+      color: grey;
+      margin-left: 5px;
+     }
 </style>
 {% endblock style %}
 {% block head %}
@@ -77,10 +115,69 @@
                 </li>
              </ul>
         </div> 
-    </div>
+</div>
+
 {% endblock head %}
 
 
 {% block content %}
+<div class = "common" style = "width: 100%;">
+     <div class = "common_left">
+       <h3 class = "common_title">My persons...</h3>
+     <form action = "{% url 'delete_persons' %}" method = "POST" id = "profileCheckBoxes">
+     <table class = "tab">
+     {% for person in persons %}
+       <tr>
+         <td><input type="checkbox" name = "" value ={{person.id}}></td>
+
+     <!- Block containing person's info inside popover'-->
+         <td style = "padding-left:30px;">
+             <a href = "#" style = "text-decoration: underline;font-weight:bold;"
+                data-toggle="popover" data-content="
+                       <table>
+                         <tr>
+                            <td style='vertical-align:top';>
+                           <img src ={%if person.photo%}{{person.photo.url}}
+                            {%else%}{% static 'img/generic-man.png'%} {%endif%}>
+                           </td>
+                            <td style='vertical-align:top';><b>First name:</b> {{person.first_name}}</br>
+                 {%if person.last_name %}<b>Last name:</b>  {{person.last_name}}</br>{% endif %}
+                 {%if person.birthday %}<b>Birthday:</b>  {{person.birthday}}</br>{% endif%}
+                 {%if person.phone %}<b>Phone:</b>  {{person.phone}}</br>{%endif%}
+                 {%if person.email %}<b>Email:</b>  {{person.email}}</br>{%endif%}
+                 {%if person.country %}<b>Adress:</b>  {{person.country}}{%endif%}
+                  {%if person.city %} / {{person.city}}{%endif%}
+                            </td>
+                         </tr>
+                       </table>"
+                data-trigger="focus" data-html="true">
+             {{person.first_name}} {% if person.last_name %}{{person.last_name}} {%endif%}
+             </a>
+         </td>
+    <!- End of popover block-->
+
+
+       </tr>
+     {% endfor %}
+     </table>
+     </form></br>
+         <div style = "float:right; margin-right:20px;">
+        <a href = "{% url 'user_profile' user.id %}" id = "personDel">Delete</a>&nbsp;&nbsp;&nbsp;
+        <a href = "#" id = "personEdit">Edit</a>
+         </div>
+     </div>
+
+     <div class = "common_rigth">
+       <h3 class = "common_title">My comments...</h3>
+     </div>
+</div>
 
 {% endblock content %}
+
+{% block footer %}
+<div style = "margin-top: 20px;float:left;width: 100%;">2018 wanted R.D</div>
+{% endblock footer%}
+
+{% block javascript_files %}
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript_files %}

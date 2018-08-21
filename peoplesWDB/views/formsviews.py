@@ -12,6 +12,7 @@ from django.contrib.auth.models import User
 
 from ..models.wanted_person import WantedPerson
 from ..util.util_func import util_main_searc
+from django.http import JsonResponse
 
 import pdb
 
@@ -84,3 +85,13 @@ def db_search(request):
     else:
         return HttpResponseRedirect(reverse('home'))
     return render(request, 'search_result.html', {'search_result': search_result})
+
+# function for delete persons by user_data
+def deletePersons(request):
+    arr = request.POST.getlist('checkedPer[]')
+    names = []
+    for item in arr:
+        per = WantedPerson.objects.get(pk=item)
+        names.append(per.first_name)
+        per.delete()
+    return JsonResponse({'deletedPersons': names})

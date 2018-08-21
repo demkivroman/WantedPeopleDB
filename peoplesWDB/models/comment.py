@@ -14,8 +14,8 @@ class Comment(models.Model):
 
     comments = models.ForeignKey(WantedPerson,
         null = True, 
-        on_delete=models.SET_NULL)
+        on_delete=models.CASCADE)
 
     user = models.ForeignKey(User,
         null = True,
-        on_delete = models.SET_NULL)
+        on_delete = models.CASCADE)

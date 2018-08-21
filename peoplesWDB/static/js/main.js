@@ -87,9 +87,14 @@ function photoChange(){
     });
 }
 
+function onPopovers(){
+    $('[data-toggle = "popover"]').popover();
+}
+
 
 $(document).ready(function(){
 commentSend();
 addPhotoLink();
 photoChange();
+onPopovers();
 });
