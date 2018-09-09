@@ -14,6 +14,9 @@
    #user_data a{
      text-decoration: underline;
    }
+   #closePopover:hover{
+    text-decoration: none;
+   }
    #user_data a:hover{
     text-decoration: none;
     color: black;
@@ -34,14 +37,12 @@
     float: left;
     background-color: #f3f3f3;
     padding: 10px;
-    border: 1px solid #ddd;
     }
    .common_rigth{
     width: 49.5%;
     float: right;
     background-color: #f3f3f3;
     padding: 10px;
-    border: 1px solid #ddd;
    }
    .tab{
     margin-top: 20px;
@@ -62,6 +63,18 @@
       color: grey;
       margin-left: 5px;
      }
+
+    #editForm td{
+     padding-top: 0px;
+    }
+    .formHide{
+       display: none;
+     }
+    #tabComments td{
+     vertical-align: top;
+     padding: 10px 5px 10px 10px;
+     border-bottom: 1px solid #ddd;
+    }
 </style>
 {% endblock style %}
 {% block head %}
@@ -121,6 +134,7 @@
 
 
 {% block content %}
+{{profilePerEdit.first_name}}
 <div class = "common" style = "width: 100%;">
      <div class = "common_left">
        <h3 class = "common_title">My persons...</h3>
@@ -162,13 +176,148 @@
      </table>
      </form></br>
          <div style = "float:right; margin-right:20px;">
-        <a href = "{% url 'user_profile' user.id %}" id = "personDel">Delete</a>&nbsp;&nbsp;&nbsp;
-        <a href = "#" id = "personEdit">Edit</a>
+        <a href = "{% url 'user_profile' user.id %}" id = "personDel">Delete</a> / 
+        <a href = "{% url 'edit_persons' %}" id = "personEdit" data-toggle= "popover" data-trigger="manual" data-html="true"
+         data-content="
+                         <form action = '{% url 'edit_persons' %}' method = 'post' enctype='multipart/form-data' id = 'formEditPer'> 
+                         <h2>{{form.personid.value}}</h2>
+                           {%csrf_token%}
+                               <table id = 'editForm'>
+                                 <tr>
+                                   <td>
+                                        <label>first name:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'text' id = 'yo' value = '' name = 'first_name' required>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>last name:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'text' value = '' name = 'last_name'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>photo:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'file' value = '' name = 'photo'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>birthday:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'date' value = '' name = 'birthday'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>phone:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'text' value = '' name = 'phone'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>email:</label>
+                                    </td>
+                                    <td>
+                             <input type = 'email' value = '' name = 'email'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>country:</label>
+                                    </td>
+                                    <td>
+                                     <input type = 'text' value = '' name = 'country'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>city:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'text' value = '' name = 'city'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                        <label>note:</label>
+                                    </td>
+                                    <td>
+                                        <input type = 'textarea' value = '' 
+                                                                         name = 'note'>
+                                    </td>
+                                 </tr>
+                            <tr>
+                                   <td>
+                                    
+                                    </td>
+                                    <td>
+                                    <input type = 'hidden' value = '' name = 'perId'></br>
+                                    <input type = 'hidden' value = {{request.path}} name ='currentURL'>
+                                    </td>
+                                 </tr>
+
+                                 <tr>
+                                    <td>
+                                         
+                                    </td>
+                                    <td>
+                                        <input type = 'submit' name='edit' value='Edit'> &nbsp; &nbsp; &nbsp;
+                                        <input type = 'reset' value = 'Clear'>
+                                    </td>
+                                 </tr>
+
+                               </table>
+                         </form>
+         ">Edit</a>
          </div>
      </div>
 
      <div class = "common_rigth">
        <h3 class = "common_title">My comments...</h3>
+           <form action = "" method = "POST" id = "profileCheckBoxesComments">
+           <table style="width:100%;table-layout: fixed;" id = "tabComments">
+               {% for comment in comments %}
+                  <tr>
+                      <td style = "width:10%;">
+                         <input type="checkbox" name = "" value ="">
+                      </td>
+                      <td style = "width:60%;">
+                          {{comment.comment}}
+                          </p>
+                      </td>
+                      <td style = "width:30%;">
+                          <p>{{comment.date}}</p>
+                          <p><a href = "#" style="text-decoration:underline">
+                             {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
+                          
+                      </td>
+                  </tr>
+               {% endfor %}
+           </table>
+           </form>
+                  <div style = "margin-top: 10px;float:right;">
+                             <a href = "" id = "delComments">Delete</a> / 
+                             <a href = "" id = "editComments">Edit</a>
+                  </div>
+
      </div>
 </div>
 
@@ -177,6 +326,7 @@
 {% block footer %}
 <div style = "margin-top: 20px;float:left;width: 100%;">2018 wanted R.D</div>
 {% endblock footer%}
+<h2>{{form.profileCheckBoxes.checkbox.value}}</h2>
 
 {% block javascript_files %}
 <script src="{% static 'js/profile.js' %}"></script>

@@ -9,6 +9,7 @@ from ..models.profile import Profile
 from ..forms.profile import profilePhoto
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+import json
 from datetime import date
 import pdb
 
@@ -35,7 +36,6 @@ class CommentSave(TemplateView):
         person = WantedPerson.objects.get(pk = kwargs.get('pk'))
         context['person'] = person
         context['comments_list'] = Comment.objects.filter(comments=person)
-        """pdb.set_trace()"""
         return context
 
 def signup_addphoto(request):
@@ -63,6 +63,10 @@ class UserProfile(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfile, self).get_context_data(**kwargs)
+        perIdEdit = self.request.GET.get('personIdEdit')  
+        if(perIdEdit):
+            context['profilePerEdit'] = WantedPerson.objects.get(pk=perIdEdit)
+        """pdb.set_trace()"""
         user_id = kwargs.get('pk')
         user = User.objects.get(pk = user_id)
         user_photo = Profile.objects.filter(user = user_id)

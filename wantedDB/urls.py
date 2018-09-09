@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^signup/$',siteviews.signup_addphoto, name = 'sign_up'),
     url(r'^user/profile/(?P<pk>\d+)$',UserProfile.as_view(), name = 'user_profile'),
     url(r'^delete/persons/',formsviews.deletePersons, name = 'delete_persons'),
+    url(r'^person/edit/',formsviews.editPerson, name = 'edit_persons'),
     url(r'^admin/', admin.site.urls),
     # urls for authentications
     url(r'^accounts/', include('allauth.urls'), name = 'login'),

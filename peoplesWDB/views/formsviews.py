@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from ..models.wanted_person import WantedPerson
 from ..util.util_func import util_main_searc
 from django.http import JsonResponse
+import json
 
 import pdb
 
@@ -92,6 +93,42 @@ def deletePersons(request):
     names = []
     for item in arr:
         per = WantedPerson.objects.get(pk=item)
-        names.append(per.first_name)
+        if per.last_name:
+            names.append(per.first_name + " " + per.last_name)
+        else:
+            names.append(per.first_name)
         per.delete()
     return JsonResponse({'deletedPersons': names})
+
+# function for edit person through profile
+def editPerson(request):
+    perIdEdit = request.GET.get('personIdEdit')
+    if request.method == "GET":
+        obj = WantedPerson.objects.get(pk=perIdEdit)
+        serList = {}
+        serList['first_name'] = obj.first_name
+        serList['last_name'] = obj.last_name
+        serList['phone'] = obj.phone
+        serList['email'] = obj.email
+        serList['country'] = obj.country
+        serList['city'] = obj.city
+        serList['note'] = obj.note
+        serList['birthday'] = obj.birthday
+        return JsonResponse({'key':serList},safe = False)
+
+    if request.method == "POST":
+        obj = WantedPerson.objects.get(pk=request.POST.get('perId','').strip())
+        obj.first_name = request.POST.get('first_name','').strip()
+        obj.last_name = request.POST.get('last_name','').strip()
+        obj.birthday = request.POST.get('birthday','').strip()
+        photo = request.FILES.get('photo')
+        if photo:
+            obj.photo = request.FILES.get('photo')
+        obj.phone = request.POST.get('phone','').strip()
+        obj.email = request.POST.get('email','').strip()
+        obj.country = request.POST.get('country','').strip()
+        obj.city = request.POST.get('city','').strip()
+        obj.note = request.POST.get('note','').strip()
+        obj.save()
+        return HttpResponseRedirect(request.POST.get('currentURL').strip())
+

@@ -51,7 +51,68 @@ function deletePersons(){
     });
     }
 
+// Function for edit user_data
+function editPerson(){
+  $("#personEdit").click(function(){
+      var arr = $("#profileCheckBoxes :checkbox");
+
+        if(arr.length > 0){
+            var checkedPersons = [];
+                for (i = 0; i < arr.length; i++){
+                    if (arr[i].checked == true)
+                       checkedPersons.push(arr[i].value);
+                }
+            if (checkedPersons.length == 0){
+               $("#personEdit").popover('hide');
+               $("#status_menu").html("<h4><b>Select one more persons to delete!</b></h4>");
+            }
+            else if (checkedPersons.length > 1){
+               //$("#personEdit").popover('hide');
+               $("#status_menu").html("<h4><b>Select only one person!</b></h4>");
+            }
+            else{
+                                          $.ajax({
+                                              url: this.href,
+                                                   type: 'get',
+                                                   dataType: 'json',
+                                                   data: {
+                                                           personIdEdit: checkedPersons[0]
+                                                         },
+                                                   success: function(data,status,xhr){
+                                                   // alert(data.key.last_name);
+                                                     $("#personEdit").popover('show');
+                                                 var form = document.getElementById("formEditPer").elements;
+                                          form["first_name"].value = data.key.first_name;
+                                          form["last_name"].value = data.key.last_name;
+                                          form["phone"].value = data.key.phone;
+                                          form["email"].value = data.key.email;
+                                          form["country"].value = data.key.country;
+                                          form["city"].value = data.key.city;
+                                          form["note"].value = data.key.note;
+                                          form["birthday"].value = data.key.birthday;
+                                          form["perId"].value = checkedPersons[0];
+
+                                                     // document.getElementById("yo").value = "yo";
+                                                     
+                                                   }
+                                               });
+                 
+                 
+            }
+        }
+    return(false);
+  });
+}
+// function for closing popover window
+function popoverClose(){
+ $("#closePopover").click(function(){
+   alert("yo");
+   //return false;
+ });
+}
 
 $(document).ready(function(){
 deletePersons();
+editPerson();
+popoverClose();
 });
