@@ -103,16 +103,63 @@ function editPerson(){
     return(false);
   });
 }
-// function for closing popover window
-function popoverClose(){
- $("#closePopover").click(function(){
-   alert("yo");
-   //return false;
- });
+
+// function for delete comments
+function commentDelete(){
+    $("#delComments").click(function(){
+        var arr = getCheckedItems($("#profileCheckBoxesComments :checkbox"));
+            if (arr.length == 0){
+            $("#delComments").popover("show");
+            $("#delCommentsInfo").text("Select one more person");
+            }
+            else if(arr.length > 0){
+                $("#delComments").popover("hide");
+                      $.ajax({
+                                  url: $("#profileCheckBoxesComments").attr('action'),
+                                  type: 'post',
+                                  dataType: 'json',
+                                  data: {
+                                         checkedCom: arr,
+                                   csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').prop ('value')
+                                             },
+                                  success: function(data,status,xhr){
+                                      var status = $("#status_menu");
+                                          status.html("<h4>Selected comments deleted...</h4>");
+                                          $("#delInfo").text("Selected comments deleted...");
+
+                                      $.ajax({
+                                                   url: this.href,
+                                                   type: 'get',
+                                                   dataType: 'html',
+
+                                                   success: function(data,status,xhr){
+                                                     var form = $("#tabComments");
+                                                     html = $(data);
+                                                     form.html(html.find('#tabComments'));
+                                                   }
+                                               });
+
+                                      }
+                              });
+            }
+        return(false);
+    });
+
+}
+// function that retrieve array of checked items, get form's checkboxes as argument
+function getCheckedItems(formCheckboxes){
+   var checkedItems = [];
+    if(formCheckboxes.length > 0){
+        for(i=0; i < formCheckboxes.length; i++){
+            if (formCheckboxes[i].checked == true)
+                checkedItems.push(formCheckboxes[i].value);
+        }
+    }
+   return checkedItems;
 }
 
 $(document).ready(function(){
 deletePersons();
 editPerson();
-popoverClose();
+commentDelete();
 });

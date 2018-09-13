@@ -3,6 +3,13 @@
 {% block title %} Profile {% endblock title%}
 {% block style %}
 <style>
+   .checkedInfo{
+       background-color: #555;
+       color: #fff;
+       text-align: center;
+       border-radius: 6px;
+       padding: 5px 0;
+   }
    #user_data{
      margin-right: 20px;
      margin-left: auto;
@@ -74,6 +81,13 @@
      vertical-align: top;
      padding: 10px 5px 10px 10px;
      border-bottom: 1px solid #ddd;
+    }
+    #delInfo{
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
     }
 </style>
 {% endblock style %}
@@ -292,30 +306,54 @@
 
      <div class = "common_rigth">
        <h3 class = "common_title">My comments...</h3>
-           <form action = "" method = "POST" id = "profileCheckBoxesComments">
+           <form action = "{% url 'delete_comments' %}" method = "POST" id = "profileCheckBoxesComments">
            <table style="width:100%;table-layout: fixed;" id = "tabComments">
                {% for comment in comments %}
                   <tr>
                       <td style = "width:10%;">
-                         <input type="checkbox" name = "" value ="">
+                         <input type="checkbox" name = "" value ={{comment.id}}>
                       </td>
                       <td style = "width:60%;">
+                          <p>
                           {{comment.comment}}
                           </p>
+                          <p><a href = "" id = "editComments" style="text-decoration:underline;">
+                              Edit</a></p>
                       </td>
                       <td style = "width:30%;">
                           <p>{{comment.date}}</p>
-                          <p><a href = "#" style="text-decoration:underline">
+                          <p><a href = "#" style="text-decoration:underline"
+                                data-toggle="popover" data-trigger="focus" data-html="true" data-content="
+                                     <table>
+                                      <tr>
+                            <td style='vertical-align:top';>
+                           <img src ={%if comment.comments.photo%}{{comment.comments.photo.url}}
+                            {%else%}{% static 'img/generic-man.png'%} {%endif%}>
+                           </td>
+                            <td style='vertical-align:top';>
+                             <b>First name:</b> {{comment.comments.first_name}}</br>
+                 {%if comment.comments.last_name %}<b>Last name:</b>  {{comment.comments.last_name}}</br>
+                 {% endif %}
+        {%if comment.comments.birthday %}<b>Birthday:</b>  {{comment.comments.birthday}}</br>{% endif%}
+        {%if comment.comments.phone %}<b>Phone:</b>  {{comment.comments.phone}}</br>{%endif%}
+        {%if comment.comments.email %}<b>Email:</b>  {{comment.comments.email}}</br>{%endif%}
+        {%if comment.comments.country %}<b>Adress:</b>  {{comment.comments.country}}{%endif%}
+                  {%if comment.comments.city %} / {{comment.comments.city}}{%endif%}
+                            </td>
+                         </tr>
+                                   </table>
+                                " data-placement="left">
                              {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
-                          
                       </td>
                   </tr>
                {% endfor %}
            </table>
            </form>
-                  <div style = "margin-top: 10px;float:right;">
-                             <a href = "" id = "delComments">Delete</a> / 
-                             <a href = "" id = "editComments">Edit</a>
+                  <div style = "margin-top: 15px;float:right;">
+                      <span id="delInfo"></span>
+                             <a href = "{% url 'user_profile' user.id %}" id = "delComments" 
+                   data-toggle= "popover" data-trigger="focus" data-html="true" data-placement="left"
+                   data-content="<span id='delCommentsInfo'></span>">Delete</a>
                   </div>
 
      </div>

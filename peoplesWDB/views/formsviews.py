@@ -11,6 +11,7 @@ from wantedDB.settings import ADMIN_EMAIL
 from django.contrib.auth.models import User
 
 from ..models.wanted_person import WantedPerson
+from ..models.comment import Comment
 from ..util.util_func import util_main_searc
 from django.http import JsonResponse
 import json
@@ -131,4 +132,12 @@ def editPerson(request):
         obj.note = request.POST.get('note','').strip()
         obj.save()
         return HttpResponseRedirect(request.POST.get('currentURL').strip())
+
+def deleteComments(request):
+    """pdb.set_trace()"""
+    arr = request.POST.getlist('checkedCom[]')
+    for item in arr:
+        com = Comment.objects.get(pk=item)
+        com.delete()
+    return JsonResponse({'key': 'success'})
 
