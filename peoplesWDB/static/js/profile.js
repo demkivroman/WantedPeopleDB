@@ -146,6 +146,22 @@ function commentDelete(){
     });
 
 }
+// function that allow to edit person's comment
+function editComment(elem){
+    var checkedCom = getCheckedItems($("#profileCheckBoxesComments :checkbox"));
+        if(checkedCom.length == 0){
+            $("#status_menu").html("<h4><b>Select one more comments to delete!</b></h4>");
+            $(elem).popover("hide");
+        }
+        else if(checkedCom.length > 1)
+            $("#status_menu").html("<h4><b>Select only one comment!</b></h4>");
+        else{
+              $("#myModal").modal();
+              var form = document.getElementById("formEditComment").elements;
+              form["commentId"].value = elem.id;
+        }
+   return false;
+}
 // function that retrieve array of checked items, get form's checkboxes as argument
 function getCheckedItems(formCheckboxes){
    var checkedItems = [];
@@ -157,6 +173,7 @@ function getCheckedItems(formCheckboxes){
     }
    return checkedItems;
 }
+
 
 $(document).ready(function(){
 deletePersons();

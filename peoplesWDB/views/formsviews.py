@@ -15,6 +15,7 @@ from ..models.comment import Comment
 from ..util.util_func import util_main_searc
 from django.http import JsonResponse
 import json
+import datetime
 
 import pdb
 
@@ -118,6 +119,14 @@ def editPerson(request):
         return JsonResponse({'key':serList},safe = False)
 
     if request.method == "POST":
+        com = request.POST.get('commentId')
+        if com:
+            obj = Comment.objects.get(pk=com)
+            obj.comment = request.POST.get('comment','').strip()
+            obj.date = datetime.date.today()
+            obj.save()
+            return HttpResponseRedirect(request.POST.get('currentURL').strip())
+
         obj = WantedPerson.objects.get(pk=request.POST.get('perId','').strip())
         obj.first_name = request.POST.get('first_name','').strip()
         obj.last_name = request.POST.get('last_name','').strip()

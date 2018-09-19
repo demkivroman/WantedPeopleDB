@@ -317,7 +317,8 @@
                           <p>
                           {{comment.comment}}
                           </p>
-                          <p><a href = "" id = "editComments" style="text-decoration:underline;">
+                          <p><a href = "#" id = "{{comment.id}}" style="text-decoration:underline;"
+                              onclick = "editComment(this)">
                               Edit</a></p>
                       </td>
                       <td style = "width:30%;">
@@ -342,8 +343,8 @@
                             </td>
                          </tr>
                                    </table>
-                                " data-placement="left">
-                             {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
+                                " data-placement="top">
+                            {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
                       </td>
                   </tr>
                {% endfor %}
@@ -358,6 +359,36 @@
 
      </div>
 </div>
+
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span>Type new comment...</span>
+          <button type="button" class="close" data-dismiss="modal">x</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form action = "{% url 'edit_persons' %}" method = 'post' enctype='multipart/ form-data' 
+                  id = 'formEditComment'> 
+             {%csrf_token%}
+                  <textarea rows = '3' cols = '100' id = 'editField' class="form-control" name = "comment"
+                   style="min-width: 100%">
+                  </textarea></br>
+                  <input type = 'hidden' value = "" name ='commentId'>
+                  <input type = 'hidden' value = {{request.path}} name ="currentURL">
+                  <input type = 'submit' name='edit' value='Edit'> &nbsp;
+                  <input type = 'reset' value = 'Clear'>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
 
 {% endblock content %}
 
