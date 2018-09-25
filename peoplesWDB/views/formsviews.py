@@ -23,6 +23,33 @@ class AddPersonForm(TemplateView):
     template_name = "forms/add_form.html"
 
 
+def sendMail(request, pk):
+    if request.method == 'POST':
+        message = request.POST.get('sendMail').strip()
+        messageTo = request.POST.get('email').strip()
+        messageFrom = request.POST.get('mailFrom').strip()
+        subject = "Mail"
+        if messageFrom:
+            message += "\n"*10 + "From:    " + messageFrom + "\n" + "Date:    " + datetime.date.today(
+                                                             ).strftime('%Y-%m-%d')
+        try:
+            send_mail(subject,message,messageTo,[ADMIN_EMAIL])
+        except Exception:
+            message = "Error. Message is not sent. Try again later"
+            messages.warning(request, message)
+            return HttpResponseRedirect(reverse('home'))
+        else:
+            message = "Message sent successfully"
+            st = pk.strip()
+            arr = st.split(" ")
+            sResult = []
+            for item in arr:
+                obj = WantedPerson.objects.get(pk=item)
+                sResult.append(obj)
+            return render(request, 'search_result.html', {'search_result': sResult,
+                                                          'perId': pk})
+
+
 def contact_form(request):
     if request.method == 'POST':
         if request.POST.get('cancel_button') is not None:
@@ -83,11 +110,16 @@ def db_search(request):
     data = request.GET['mainsearch'].strip()
     if data:
         search_result = util_main_searc(data)
-        if not search_result:
-            messages.warning(request, 'No results')
+        if search_result:
+            perId = ""
+            for item in search_result:
+                perId += str(item.id) + " "
+            return render(request, 'search_result.html', {'search_result': search_result,
+                                                          'perId': perId})
+        else:
+            messages.warning(request, 'No results found...')
     else:
         return HttpResponseRedirect(reverse('home'))
-    return render(request, 'search_result.html', {'search_result': search_result})
 
 # function for delete persons by user_data
 def deletePersons(request):

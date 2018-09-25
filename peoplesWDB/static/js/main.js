@@ -71,20 +71,14 @@ function addPhotoLink(){
 function photoChange(){
     $("#photoAdd").change(function(){
         $("#profileForm").submit();
-/*
-       $.ajax({
-                  url: $("#PhotoAddLink").href,
-                  type: 'post',
-                  dataType: 'json',
-                  data: {
-                         photo: $("#photoAdd").val(),
-                         csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').prop('value')
-                         },
-                  success: function(data,status,xhr){
-                           }
-              });
-*/
     });
+}
+
+// Function for sending message through person's results
+function sendMail(el){
+    $("#sendMessageModal").modal();
+    var form = document.getElementById("formSendMessage").elements;
+        form["email"].value = el.dataset.email;
 }
 
 function onPopovers(){

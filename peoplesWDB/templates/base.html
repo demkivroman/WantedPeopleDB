@@ -46,12 +46,15 @@
         {% endif %}
             </div>
         </div>
-        <div class = "col-sm-2" style="text-align:right">
+        <div class = "col-sm-2" style="text-align:right; padding-top:30px;">
+<!--
            <div class = "langswitcher">
            <a href="#">en</a> /
            <a href="#">uk</a> /
            <a href="#">ru</a>
            </div>
+-->
+            <a href="{% url 'about_us' %}">About us</a>
         </div>
     </div>
 
@@ -73,7 +76,7 @@
              </ul>
         </div> 
         <div class = "col-sm-2" style="text-align:right">
-          <a class="nav-link active" href="{% url 'about_us' %}">About us</a>
+       <!--   <a class="nav-link active" href="{% url 'about_us' %}">About us</a> -->
         </div>
     </div>
 {% endblock head %}
