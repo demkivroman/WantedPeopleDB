@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 from ..models.wanted_person import WantedPerson
 from ..models.comment import Comment
-from ..util.util_func import util_main_searc
+from ..util.util_func import util_main_searc, util_currId
 from django.http import JsonResponse
 import json
 import datetime
@@ -23,7 +23,7 @@ class AddPersonForm(TemplateView):
     template_name = "forms/add_form.html"
 
 
-def sendMail(request, pk):
+def sendMail(request):
     if request.method == 'POST':
         message = request.POST.get('sendMail').strip()
         messageTo = request.POST.get('email').strip()
@@ -40,14 +40,15 @@ def sendMail(request, pk):
             return HttpResponseRedirect(reverse('home'))
         else:
             message = "Message sent successfully"
-            st = pk.strip()
-            arr = st.split(" ")
+            st = request.POST.get('currentURL').strip()
+            arr = st.split("/")
+            del arr[-1]
             sResult = []
             for item in arr:
                 obj = WantedPerson.objects.get(pk=item)
                 sResult.append(obj)
             return render(request, 'search_result.html', {'search_result': sResult,
-                                                          'perId': pk})
+                                                          'perId': st})
 
 
 def contact_form(request):
@@ -107,17 +108,24 @@ def add_wanted_person(request):
 
 # function of searching in database
 def db_search(request):
+    if request.method == 'GET' and 'all' in request.GET:
+        allPer = request.GET['all']
+        if allPer:
+            arrPer = sorted(WantedPerson.objects.all(), key = lambda item: item.first_name.lower())
+            perId = util_currId(arrPer)
+            return render(request, 'search_result.html', {'search_result': arrPer,
+                                                          'perId': perId})
     data = request.GET['mainsearch'].strip()
     if data:
-        search_result = util_main_searc(data)
+        search_result = sorted(util_main_searc(data), key = lambda item: item.first_name.lower())
         if search_result:
-            perId = ""
-            for item in search_result:
-                perId += str(item.id) + " "
+            perId = util_currId(search_result)
             return render(request, 'search_result.html', {'search_result': search_result,
                                                           'perId': perId})
         else:
             messages.warning(request, 'No results found...')
+            return render(request, 'search_result.html', {'search_result': search_result,
+                                                          'perId': ' '})
     else:
         return HttpResponseRedirect(reverse('home'))
 

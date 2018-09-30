@@ -38,7 +38,7 @@
                           <td class = " td_photo">
                           {% if person.photo %}
                           <a href = "{{person.photo.url}}">
-                          <img height = "100" width = "100" class="w3-grayscale" 
+                          <img height = "100" width = "100" class="w3-grayscale" target = "_self"
                           src = "{{person.photo.url}}">
                           </a>
                           {% else %}
@@ -99,7 +99,7 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-         <form action = "{% url 'send_mail' perId %}" method = 'post' enctype='multipart/ form-data' 
+         <form action = "{% url 'send_mail'%}" method = 'post' enctype='multipart/ form-data' 
                   id = 'formSendMessage'> 
              {%csrf_token%}
                   <label>Email(optional):</label></br>
@@ -108,7 +108,7 @@
                    style="min-width: 100%" required>
                   </textarea></br></br>
                   <input type = 'hidden' value = "" name ='email'>
-                  <input type = 'hidden' value = {{request.path}} name ="currentURL">
+                  <input type = 'hidden' value = {{perId}} name ="currentURL">
                   <input type = 'submit' name='send' value='Send'> &nbsp;
                   <input type = 'reset' value = 'Clear'>
             </form>

@@ -28,7 +28,10 @@ body a:hover{
    color: white;
 }
 
-
+#search a:hover{
+   color: rgb(51,51,51);
+   text-decoration:none;
+}
 #status_menu{
     padding: 10px;
 }

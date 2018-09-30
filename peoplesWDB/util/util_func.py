@@ -11,3 +11,10 @@ def util_main_searc(param):
         if str(param).lower() in s.lower():
             results.append(record)
     return results
+
+# function for return id of persons from currentURL
+def util_currId(param):
+    perId = ""
+    for item in param:
+        perId += str(item.id) + "/"
+    return perId
