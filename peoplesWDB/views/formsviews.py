@@ -3,7 +3,7 @@ from ..forms.add_want_pers_form import AddWanPerson
 from ..forms.contact_form import ContactForm
 from ..forms.profile import profilePhoto
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -101,7 +101,7 @@ def add_wanted_person(request):
             messages.success(request, 'Add successfully :)')
             return HttpResponseRedirect(reverse('home'))
 
-         
+
     else:
         form = AddWanPerson()
         return render(request, 'forms/add_form.html', {'form':form, 'admin': ADMIN_EMAIL})

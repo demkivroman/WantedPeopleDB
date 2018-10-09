@@ -72,7 +72,7 @@
      }
 
     #editForm td{
-     padding-top: 0px;
+     padding: 5px;
     }
     .formHide{
        display: none;
@@ -95,7 +95,7 @@
     <div class = "row" id = "head">
         <div class = "col-sm-6" style="margin-top: 20px;">
           <h2>
-          <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           <b>Database of wanted people</b>
           </h2>
@@ -106,12 +106,12 @@
                <tr>
                   <td style = "text-align: center">
                       {% if user_photo %}
-                         <img height = "70" width = "70" 
-                          style = "border-radius: 50%;filter: grayscale(100%);" 
+                         <img height = "70" width = "70"
+                          style = "border-radius: 50%;filter: grayscale(100%);"
                           src = "{{user_photo.url}}">
                        {% else %}
-                         <img height = "70" width = "70" 
-                          style = "border-radius: 50%;filter: grayscale(100%);" 
+                         <img height = "70" width = "70"
+                          style = "border-radius: 50%;filter: grayscale(100%);"
                           src = "{% static 'img/generic-man.png'%}">
                        {% endif %}
                        <br>
@@ -131,7 +131,7 @@
         </div>
     </div>
 
-<div class = "row" id = "navbar">   
+<div class = "row" id = "navbar">
         <div class = "col-sm-12">
              <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -141,7 +141,7 @@
                 <a class="nav-link" href="{% url 'add_person' %}"><b>Add</b></a>
                 </li>
              </ul>
-        </div> 
+        </div>
 </div>
 
 {% endblock head %}
@@ -190,11 +190,111 @@
      </table>
      </form></br>
          <div style = "float:right; margin-right:20px;">
-        <a href = "{% url 'user_profile' user.id %}" id = "personDel">Delete</a> / 
-        <a href = "{% url 'edit_persons' %}" id = "personEdit" data-toggle= "popover" data-trigger="manual" data-html="true"
-         data-content="
-                         <form action = '{% url 'edit_persons' %}' method = 'post' enctype='multipart/form-data' id = 'formEditPer'> 
-                         <h2>{{form.personid.value}}</h2>
+        <a href = "{% url 'user_profile' user.id %}" id = "personDel">Delete</a> /
+        <a href = "{% url 'edit_persons' %}" id = "personEdit">Edit</a>
+         </div>
+     </div>
+
+     <div class = "common_rigth">
+       <h3 class = "common_title">My comments...</h3>
+           <form action = "{% url 'delete_comments' %}" method = "POST" id = "profileCheckBoxesComments">
+           <table style="width:100%;table-layout: fixed;" id = "tabComments">
+               {% for comment in comments %}
+                  <tr>
+                      <td style = "width:10%;">
+                         <input type="checkbox" name = "" value ={{comment.id}}>
+                      </td>
+                      <td style = "width:60%;">
+                          <p>
+                          {{comment.comment}}
+                          </p>
+                          <p><a href = "#" id = "{{comment.id}}" style="text-decoration:underline;"
+                              onclick = "editComment(this)">
+                              Edit</a></p>
+                      </td>
+                      <td style = "width:30%;">
+                          <p>{{comment.date}}</p>
+                          <p><a href = "#" style="text-decoration:underline"
+                                data-toggle="popover" data-trigger="focus" data-html="true" data-content="
+                                     <table>
+                                      <tr>
+                            <td style='vertical-align:top';>
+                           <img src ={%if comment.comments.photo%}{{comment.comments.photo.url}}
+                            {%else%}{% static 'img/generic-man.png'%} {%endif%}>
+                           </td>
+                            <td style='vertical-align:top';>
+                             <b>First name:</b> {{comment.comments.first_name}}</br>
+                 {%if comment.comments.last_name %}<b>Last name:</b>  {{comment.comments.last_name}}</br>
+                 {% endif %}
+        {%if comment.comments.birthday %}<b>Birthday:</b>  {{comment.comments.birthday}}</br>{% endif%}
+        {%if comment.comments.phone %}<b>Phone:</b>  {{comment.comments.phone}}</br>{%endif%}
+        {%if comment.comments.email %}<b>Email:</b>  {{comment.comments.email}}</br>{%endif%}
+        {%if comment.comments.country %}<b>Adress:</b>  {{comment.comments.country}}{%endif%}
+                  {%if comment.comments.city %} / {{comment.comments.city}}{%endif%}
+                            </td>
+                         </tr>
+                                   </table>
+                                " data-placement="top">
+                            {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
+                      </td>
+                  </tr>
+               {% endfor %}
+           </table>
+           </form>
+                  <div style = "margin-top: 15px;float:right;">
+                      <span id="delInfo"></span>
+                             <a href = "{% url 'user_profile' user.id %}" id = "delComments"
+                   data-toggle= "popover" data-trigger="focus" data-html="true" data-placement="left"
+                   data-content="<span id='delCommentsInfo'></span>">Delete</a>
+                  </div>
+
+     </div>
+</div>
+
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span>Type new comment...</span>
+          <button type="button" class="close" data-dismiss="modal">x</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form action = "{% url 'edit_persons' %}" method = 'post' enctype='multipart/ form-data'
+                  id = 'formEditComment'>
+             {%csrf_token%}
+                  <textarea rows = '3' cols = '100' id = 'editField' class="form-control" name = "comment"
+                   style="min-width: 100%">
+                  </textarea></br>
+                  <input type = 'hidden' value = "" name ='commentId'>
+                  <input type = 'hidden' value = {{request.path}} name ="currentURL">
+                  <input type = 'submit' name='edit' value='Edit'> &nbsp;
+                  <input type = 'reset' value = 'Clear'>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
+
+  <!-- Modal for edit person -->
+     <div class="modal fade" id="modalEdit">
+       <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span>Edit person...</span>
+          <button type="button" class="close" data-dismiss="modal">x</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form action = '{% url 'edit_persons' %}' method = 'post' enctype='multipart/form-data' id = 'formEditPer'>
                            {%csrf_token%}
                                <table id = 'editForm'>
                                  <tr>
@@ -274,13 +374,13 @@
                                         <label>note:</label>
                                     </td>
                                     <td>
-                                        <input type = 'textarea' value = '' 
+                                        <input type = 'textarea' value = ''
                                                                          name = 'note'>
                                     </td>
                                  </tr>
                             <tr>
                                    <td>
-                                    
+
                                     </td>
                                     <td>
                                     <input type = 'hidden' value = '' name = 'perId'></br>
@@ -290,7 +390,7 @@
 
                                  <tr>
                                     <td>
-                                         
+
                                     </td>
                                     <td>
                                         <input type = 'submit' name='edit' value='Edit'> &nbsp; &nbsp; &nbsp;
@@ -300,96 +400,11 @@
 
                                </table>
                          </form>
-         ">Edit</a>
-         </div>
-     </div>
-
-     <div class = "common_rigth">
-       <h3 class = "common_title">My comments...</h3>
-           <form action = "{% url 'delete_comments' %}" method = "POST" id = "profileCheckBoxesComments">
-           <table style="width:100%;table-layout: fixed;" id = "tabComments">
-               {% for comment in comments %}
-                  <tr>
-                      <td style = "width:10%;">
-                         <input type="checkbox" name = "" value ={{comment.id}}>
-                      </td>
-                      <td style = "width:60%;">
-                          <p>
-                          {{comment.comment}}
-                          </p>
-                          <p><a href = "#" id = "{{comment.id}}" style="text-decoration:underline;"
-                              onclick = "editComment(this)">
-                              Edit</a></p>
-                      </td>
-                      <td style = "width:30%;">
-                          <p>{{comment.date}}</p>
-                          <p><a href = "#" style="text-decoration:underline"
-                                data-toggle="popover" data-trigger="focus" data-html="true" data-content="
-                                     <table>
-                                      <tr>
-                            <td style='vertical-align:top';>
-                           <img src ={%if comment.comments.photo%}{{comment.comments.photo.url}}
-                            {%else%}{% static 'img/generic-man.png'%} {%endif%}>
-                           </td>
-                            <td style='vertical-align:top';>
-                             <b>First name:</b> {{comment.comments.first_name}}</br>
-                 {%if comment.comments.last_name %}<b>Last name:</b>  {{comment.comments.last_name}}</br>
-                 {% endif %}
-        {%if comment.comments.birthday %}<b>Birthday:</b>  {{comment.comments.birthday}}</br>{% endif%}
-        {%if comment.comments.phone %}<b>Phone:</b>  {{comment.comments.phone}}</br>{%endif%}
-        {%if comment.comments.email %}<b>Email:</b>  {{comment.comments.email}}</br>{%endif%}
-        {%if comment.comments.country %}<b>Adress:</b>  {{comment.comments.country}}{%endif%}
-                  {%if comment.comments.city %} / {{comment.comments.city}}{%endif%}
-                            </td>
-                         </tr>
-                                   </table>
-                                " data-placement="top">
-                            {{comment.comments.first_name}} {{comment.comments.last_name}}</a></p>
-                      </td>
-                  </tr>
-               {% endfor %}
-           </table>
-           </form>
-                  <div style = "margin-top: 15px;float:right;">
-                      <span id="delInfo"></span>
-                             <a href = "{% url 'user_profile' user.id %}" id = "delComments" 
-                   data-toggle= "popover" data-trigger="focus" data-html="true" data-placement="left"
-                   data-content="<span id='delCommentsInfo'></span>">Delete</a>
-                  </div>
-
-     </div>
-</div>
-
-<!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <span>Type new comment...</span>
-          <button type="button" class="close" data-dismiss="modal">x</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-            <form action = "{% url 'edit_persons' %}" method = 'post' enctype='multipart/ form-data' 
-                  id = 'formEditComment'> 
-             {%csrf_token%}
-                  <textarea rows = '3' cols = '100' id = 'editField' class="form-control" name = "comment"
-                   style="min-width: 100%">
-                  </textarea></br>
-                  <input type = 'hidden' value = "" name ='commentId'>
-                  <input type = 'hidden' value = {{request.path}} name ="currentURL">
-                  <input type = 'submit' name='edit' value='Edit'> &nbsp;
-                  <input type = 'reset' value = 'Clear'>
-            </form>
         </div>
       </div>
     </div>
   </div>
-  <!-- End Modal -->
-
+  <!-- End modal for edit person -->
 {% endblock content %}
 
 {% block footer %}

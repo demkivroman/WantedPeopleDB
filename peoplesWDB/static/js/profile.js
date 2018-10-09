@@ -25,7 +25,7 @@ function deletePersons(){
                                               for(i = 0; i < delPer.length; i++){
                                                    status.append("<h5>. <b>" + delPer[i] + "</b></h5>")
                                               }
-      
+
                                                $.ajax({
                                                    url: this.href,
                                                    type: 'get',
@@ -38,7 +38,7 @@ function deletePersons(){
                                                });
                                       }
                               });
-                        
+
                    }
                    else{
                          $("#status_menu").html("<h4><b>Select one more persons to delete!</b></h4>");
@@ -71,6 +71,8 @@ function editPerson(){
                $("#status_menu").html("<h4><b>Select only one person!</b></h4>");
             }
             else{
+                       $("#modalEdit").modal();
+
                                           $.ajax({
                                               url: this.href,
                                                    type: 'get',
@@ -93,11 +95,11 @@ function editPerson(){
                                           form["perId"].value = checkedPersons[0];
 
                                                      // document.getElementById("yo").value = "yo";
-                                                     
+
                                                    }
                                                });
-                 
-                 
+
+
             }
         }
     return(false);

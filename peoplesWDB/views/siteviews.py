@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
@@ -63,7 +63,7 @@ class UserProfile(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserProfile, self).get_context_data(**kwargs)
-        perIdEdit = self.request.GET.get('personIdEdit')  
+        perIdEdit = self.request.GET.get('personIdEdit')
         if(perIdEdit):
             context['profilePerEdit'] = WantedPerson.objects.get(pk=perIdEdit)
         """pdb.set_trace()"""
