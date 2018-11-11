@@ -5,7 +5,16 @@
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
+{% block style%}
+<style>
+   #workzone{
+           background-color: white;
+           padding: 15px;
+      }
+</style>
+{% endblock style %}
 {% block content %}
+
 
 <h2>{% trans "Sign In" %}</h2>
 
@@ -42,7 +51,10 @@ for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
   {% endif %}
   </table>
   <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button> </br></br>
+  <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+  <img src="https://www.freeiconspng.com/uploads/facebook-login-button-png-11.png" width="160" height="65" alt="Facebook login button png" />
+  </a>
 </form>
 
 {% endblock %}

@@ -13,12 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage 
+from peoplesWDB.views.basepage import HomePageView, HelpPage, AboutUsPage
 from peoplesWDB.views.siteviews import CommentSave, UserProfile
 from peoplesWDB.views import formsviews, siteviews
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.static import serve
 from django.conf.urls import include
 
 from django.conf.urls import url
@@ -39,6 +38,7 @@ urlpatterns = [
     url(r'^delete/persons/',formsviews.deletePersons, name = 'delete_persons'),
     url(r'^person/edit/',formsviews.editPerson, name = 'edit_persons'),
     url(r'^delete/comments/',formsviews.deleteComments, name = 'delete_comments'),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
     # urls for authentications
     url(r'^accounts/', include('allauth.urls'), name = 'login'),

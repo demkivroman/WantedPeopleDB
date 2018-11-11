@@ -10,7 +10,6 @@
     }
     img{
     border-radius: 8px;
-    filter: grayscale(100%);
     }
     .td_photo{
     width: 80px;
@@ -35,18 +34,21 @@
                 <table style="width: 50%">
                     {% for person in search_result %}
                        <tr>
-                          <td class = " td_photo">
+                          <td class = "td_photo"
+                          {%if not person.note %} style="border-bottom: 1px solid #d0d0d0;"{%endif%}>
                           {% if person.photo %}
-                          <a href = "{{person.photo.url}}">
-                          <img height = "100" width = "100" class="w3-grayscale" target = "_self"
+                          <a href = "{%url 'comment' person.id%}">
+                          <img height = "100" width = "100" target = "_self"
                           src = "{{person.photo.url}}">
                           </a>
                           {% else %}
-                          <img height = "100" width = "100" class="w3-grayscale" 
+                          <a href = "{% url 'comment' person.id %}">
+                          <img height = "100" width = "100" class="w3-grayscale"
                           src = "{% static 'img/generic-man.png'%}">
+                          </a>
                           {% endif%}
                           </td>
-                          <td>
+                          <td {%if not person.note %} style="border-bottom: 1px solid #d0d0d0;"{%endif%}>
                           <strong>name: </strong>{{ person.first_name }} {{ person.last_name }} </br>
                           {% if person.birthday %}
                           <strong>birthday: </strong>{{person.birthday}} </br>
@@ -55,9 +57,7 @@
                           <strong>phone: </strong>{{person.phone}} </br>
                           {% endif %}
                           {% if person.email %}
-                          <strong>email: <a href = "#" style="text-decoration:underline;"
-                                            data-email = {{person.email}} onclick = "sendMail(this)">
-                          </strong>{{person.email}}</a> </br>
+                          <strong>email: </strong>{{person.email}}</br>
                           {% endif %}
                           {% if person.country %}
                           <strong>address: </strong>{{person.country}} {{person.city}}</br>
@@ -65,23 +65,18 @@
                           </td>
                        </tr>
                        {% if person.note %}
-                          <tr><td colspan = "2" style="padding-top:0px">
-                          <strong>Note: </strong>{{person.note}}
+                          <tr><td colspan = "2" style="padding-top:0px;border-bottom: 1px solid #d0d0d0;">
+                          <strong>Note: </strong>
+                          {% if person.note|length > 100 %} {{person.note|truncatechars:100}}
+                          {% else %} {{person.note}}{%endif%}
+                          <a href = "{% url 'comment' person.id %}"
+                          style="text-decoration:underline;">More</a>
                           </td>
                           </tr>
                        {% endif %}
-                       <tr>
-                         <td style="padding-top:0px;">
-                         <a href="{% url 'comment' person.id %}"
-                          class="badge badge-secondary">
-                           Comments</a>
-                         </td>
-                         <td style="border-bottom: 1px solid #d0d0d0;">
-                         </td>
-                       </tr>
                     {% endfor %}
                 </table>
-                
+
             {% endif %}
         </div>
 </div>
@@ -90,33 +85,7 @@
   <div class="modal fade" id="sendMessageModal">
     <div class="modal-dialog">
       <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <span>Send message to person who submited an ad...</span>
-          <button type="button" class="close" data-dismiss="modal">x</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-         <form action = "{% url 'send_mail'%}" method = 'post' enctype='multipart/ form-data' 
-                  id = 'formSendMessage'> 
-             {%csrf_token%}
-                  <label>Email(optional):</label></br>
-                  <input type = 'email' value = "" name = "mailFrom" size = "40"></br></br>
-                  <textarea rows = '3' cols = '100' name = "sendMail"
-                   style="min-width: 100%" required>
-                  </textarea></br></br>
-                  <input type = 'hidden' value = "" name ='email'>
-                  <input type = 'hidden' value = {{perId}} name ="currentURL">
-                  <input type = 'submit' name='send' value='Send'> &nbsp;
-                  <input type = 'reset' value = 'Clear'>
-            </form>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Modal -->
+
 
 
 {% endblock content %}

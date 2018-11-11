@@ -107,7 +107,7 @@
                   <td style = "text-align: center">
                       {% if user_photo %}
                          <img height = "70" width = "70"
-                          style = "border-radius: 50%;filter: grayscale(100%);"
+                          style = "border-radius: 50%;"
                           src = "{{user_photo.url}}">
                        {% else %}
                          <img height = "70" width = "70"
@@ -118,12 +118,16 @@
                        <form action="{% url 'user_profile' user.id %}" method="POST" id = "profileForm"
                                       enctype="multipart/form-data">
                        {% csrf_token %}
+                         {% if user.photo%}
+                         {{user.avatar}}
+                         {{else}}
                          {{profileForm.photo}}
+                         {% endif %}
                        </form>
                        <a href = "#" id = "PhotoAddLink"> change </a>
                   </td>
                   <td style = "vertical-align: top;">
-                    <b>{{ user.username }} </b></br>
+                    <b>{{ user.get_full_name|default:user.username }} </b></br>
                     <b>{{ user.email }} </b>
                   </td>
                </tr>

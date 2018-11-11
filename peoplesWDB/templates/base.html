@@ -3,11 +3,13 @@
 <html lang = "en">
 <head>
   <meta charset="utf-8">
-<title>{% block title %}Database of lost people{% endblock title %}</title>
-  <meta name="keywords" content="people,wanted,lost,database,find people"/>
+<title>{% block title %}Database of wanted people{% endblock title %}</title>
+  <meta name="keywords" content="people,wanted,lost,database,find people,lost people,wanted people,wanted database"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name = "description" value = "Database of lost people" />
+  <meta name = "description" value = "Database of lost people, wanted people. Look for someone sign in here" />
   <meta name="author" content="Roman Demkiv"/>
+  {% block metaForFacebookSharing%}{% endblock metaForFacebookSharing%}
+  <meta name="google-site-verification" content="NuX9vuL9WjKPN6LI-2RzyTgx6ver5d35w0Yyw5vB2M0" />
 <!-- Boostrap inclusion -->
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -21,7 +23,28 @@
 {% endblock style %}
 </head>
 
+<style>
+    #photoHead{
+        text-align:center;
+        background-color:#e0e0d1;
+        padding:5px;
+        border-radius: 4px;
+        font-family: Comic Sans MS;
+    }
+    #borderAroundPhoto{
+      border: 1px solid #ccccb3;
+      padding:15px;
+      border-radius: 6px;
+    }
+    #basePerList a:hover{
+       text-decoration:underline;
+       background-color:#e0e0d1;
+    }
+</style>
+
 <body>
+
+
 
 <div class = "container" >
     {% block head %}
@@ -37,23 +60,22 @@
             <div style = "padding-top: 30px;text-align:right">
         {% if user.is_authenticated %}
         <a href = "{% url 'user_profile' user.id %}">
-        <span>{{user.username}}</span>
+            {{ user.get_full_name|default:user.username }}
+
         </a> |
         <a href = "{% url 'account_logout' %}">Logout</a>
         {% else %}
+
+    <!--
+            <div class="fb-login-button" data-max-rows="1" data-size="small"
+                     data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false">
+             </div> -->
         <a href = "{% url 'account_login' %}">Login</a> |
-        <a href = "{% url 'account_signup' %}">Register</a>
+        <a href = "{% url 'account_signup' %}">Register</a></br>
         {% endif %}
             </div>
         </div>
         <div class = "col-sm-2" style="text-align:right; padding-top:30px;">
-<!--
-           <div class = "langswitcher">
-           <a href="#">en</a> /
-           <a href="#">uk</a> /
-           <a href="#">ru</a>
-           </div>
--->
             <a href="{% url 'about_us' %}">About us</a>
         </div>
     </div>
@@ -74,9 +96,6 @@
                 <a class="nav-link" href="{% url 'help' %}"><b>Donate</b></a>
                 </li>
              </ul>
-        </div>
-        <div class = "col-sm-2" style="text-align:right">
-       <!--   <a class="nav-link active" href="{% url 'about_us' %}">About us</a> -->
         </div>
     </div>
 {% endblock head %}
@@ -102,7 +121,7 @@
            <nav class="navbar navbar-light bg-light">
              <form action="{% url 'search' %}" method="GET" class = "form-inline" id = "main_search" >
                <input class="form-control" type="text" name="mainsearch"
-                 placeholder="Enter information about wanted person">
+                 placeholder="Enter info about wanted person: name, location e.t.">
 
             <!--
                <button class="btn" type="submit">
@@ -112,20 +131,51 @@
 
              </form>
 
-                 <p style="text-align:center;margin-top:20px;">
-                 <a href = "{% url 'search' %}?all=True"
-                    style = "text-decoration:underline;padding:15px;background-color:white;">
-                       All wanted persons</a>
-                 </p>
-
            </nav>
         </div>
     </div>
 
+    <!-- Block for depicting of wanted person's on main page -->
+    <div class = "row" id = "basePerList">
+        <div class = "col-sm-12">
+             {% if BASEPERSONS %}
+                <table align = "center">
+                 <tr>
+                {% for person in BASEPERSONS %}
+                   <td style="padding-right:50px;">
+                     <div id="borderAroundPhoto">
+                      <p id="photoHead">
+                      <a href="{%url 'comment' person.id%}" style="color:black;">
+                         {{ person.first_name}} {{person.last_name}}
+                      </a>
+                      </p>
+                      <p>
+                          {% if person.photo %}
+                          <a href = "{%url 'comment' person.id%}">
+                          <img height = "100" width = "100" class="w3-grayscale" target = "_self"
+                          src = "{{person.photo.url}}" class="image">
+                          </a>
+                          {% else %}
+                          <a href = "{% url 'comment' person.id %}">
+                          <img height = "100" width = "100" class="w3-grayscale"
+                          src = "{% static 'img/generic-man.png'%}" class="image">
+                          </a>
+                          {% endif%}
+                       </p>
+                     </div>
+                    </td>
+                {% endfor %}
+                 </tr>
+               </table>
+             {% endif %}
+        </div>
+    </div>
+
+
 {% endblock content %}
 {% block footer %}
-   <div class = "row" id = "footer">
-       <div class = "col-sm-6">
+   <div class = "row" id = "footer" style="padding-top:100px;">
+       <div class = "col-sm-12">
           <span class = "glyphicon glyphicon-copyright-mark"> </span> 2018 wanted R.D
        </div>
    </div>

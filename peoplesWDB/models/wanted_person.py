@@ -16,8 +16,7 @@ class WantedPerson(models.Model):
 
     photo = models.ImageField(
         upload_to = 'img/',
-
-        blank = True,
+        blank = False,
         verbose_name = "Photo")
 
     birthday = models.DateField(
@@ -48,7 +47,7 @@ class WantedPerson(models.Model):
         blank = True,
         verbose_name = "Note")
 
-    user = models.ForeignKey(User, 
+    user = models.ForeignKey(User,
         blank = True,
         null = True,
         on_delete=models.CASCADE)

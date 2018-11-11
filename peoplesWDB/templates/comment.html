@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block title %} Comments {% endblock title%}
+{% block metaForFacebookSharing%}
+  <meta property="fb:app_id"        content="1443713915762919" />
+  <meta property="og:url"           content={{request.path}} />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Help find those person" />
+  <meta property="og:description"   content="Name: {{person.first_name}} {{person.last_name}} Email: {{person.email}} INFORMATION: {{person.note}}" />
+  <meta property="og:image"         content={{person.photo.url}} />
+{% endblock metaForFacebookSharing%}
 {% block style %}
 <style>
     td{
@@ -10,7 +18,6 @@
     }
     img{
     border-radius: 8px;
-    filter: grayscale(100%);
     }
     .td_photo{
     width: 80px;
@@ -20,7 +27,7 @@
     }
     #comment_field{
     width: 60%;
-    border: 1px solid grey;
+    border: 1px solid #999999;
     border-radius: 6px;
     padding: 5px;
     padding-bottom: 0px;
@@ -29,44 +36,119 @@
      color: black;
      font-size: 12px;
      }
+     .perData{
+       background-color:#ebebe0;
+       padding:5px;
+       color:black;
+       border-radius: 4px;
+      }
+      #workzone{
+           background-color: white;
+           padding: 15px;
+      }
+
+      .facebookBut:hover{
+          background-color: white;
+      }
 
 </style>
 {% endblock style %}
 {% block content %}
+<!-- Load Common Facebook SDK -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1443713915762919',
+      autoLogAppEvents : true,
+      xfbml            : true,
+      version          : 'v3.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.2&appId=1443713915762919&autoLogAppEvents=1';
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- End of load Facebook SDK-->
+
+
+
 <div>
-    <div class = "col-sm-6">
+    <div class = "col-sm-8">
                 <table>
                        <tr>
                           <td class = " td_photo">
                           {% if person.photo %}
                           <a href = "{{person.photo.url}}">
-                          <img height = "100" width = "100" class="w3-grayscale" 
+                          <img height = "200" width = "200"
                           src = "{{person.photo.url}}">
                           </a>
                           {% else %}
-                          <img height = "100" width = "100" class="w3-grayscale" 
+                          <img height = "100" width = "100" class="w3-grayscale"
                           src = "{% static 'img/generic-man.png'%}">
                           {% endif%}
                           </td>
                           <td>
-                          <strong>name: </strong>{{ person.first_name }} {{ person.last_name }} </br>
+                          <p>
+                          <span class="perData">
+                          <b>name: </b>{{ person.first_name }} {{ person.last_name }}
+                          </span></p>
                           {% if person.birthday %}
-                          <strong>birthday: </strong>{{person.birthday}} </br>
+                          <p>
+                          <span class="perData">
+                          <b>birthday: </b>{{person.birthday}}
+                           </span>
+                           </p>
                           {% endif %}
                           {% if person.phone %}
-                          <strong>phone: </strong>{{person.phone}} </br>
+                          <p>
+                          <span class="perData">
+                          <b>phone: </b>{{person.phone}}
+                          </span>
+                          </p>
                           {% endif %}
                           {% if person.email %}
-                          <strong>email: </strong>{{person.email}} </br>
+                          <p>
+                          <span class="perData">
+                          <b>email: </b>
+                          <a href="#" style="text-decoration:underline;" onclick = "sendMail(this)">{{person.email}}</a>
+                          </span>
+                          </p>
                           {% endif %}
                           {% if person.country %}
-                          <strong>address: </strong>{{person.country}} {{person.city}}</br>
-                          {% endif %}
+                          <p>
+                          <span class="perData">
+                          <b>address: </b>{{person.country}} | {{person.city}}
+                          </span>
+                          </p>
+                          {% endif %} </br>
+
+                        <!-- Your share button code -->
+                                  <div class="fb-share-button"
+                                      data-href={{request.path}}
+                                      data-layout="button_count">
+                                  </div>
+
                           </td>
                        </tr>
                        {% if person.note %}
-                          <tr><td colspan = "2" style="padding-top:0px">
-                          <strong>Note: </strong>{{person.note}}
+                          <tr><td colspan = "2"
+                       style="padding:10px;background-color:#333;color:white;border-radius: 8px;">
+                          <strong>INFORMATION: </strong></br>{{person.note}}
                           </td>
                           </tr>
                        {% endif %}
@@ -77,8 +159,8 @@
              <div id="comment_div">
              <p id = "error" style="color: grey;padding-left:10px;"></p>
              <textarea id = "comment_field" rows = "1" oninput = "formAutoResize(this)"
-             placeholder = "type comment"> 
-             </textarea> 
+             placeholder = "type comment">
+             </textarea>
              {% csrf_token %}
              <p style = "text-align:left;padding:5px;width:60%;">
                 <a href = "{% url 'comment_save' %}" data-person-id = {{person.id}}
@@ -87,8 +169,12 @@
              </p>
              </div>
              {% else %}
-             <div id = "comment_div" style="padding-left:15px;">
+             <div id = "comment_div" style="padding-left:15px;padding-top:15px;">
              <a href = "{% url 'account_signup' %}" class="badge badge-secondary">Add comment</a>
+             <a class="facebookBut" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+             <img src="https://img.icons8.com/color/50/000000/facebook.png" width="30" height="30" />
+             </a>
+
              </div>
              {% endif %}
 
@@ -96,15 +182,18 @@
             <p id = "demo"></p>
         </div>
 <!-- Zone for comments -->
-    <div class = "col-sm-6">
-    <h3>Comments...</h3>
+    <div class = "col-sm-4">
+    <h3>
+        Comments...</h3>
   <div id = "all_comments">
     {% for comment in comments_list %}
         <div class = "coments_block">
-        <p class = "coments_user_block">
-            <b>{{comment.user.username}}</b> | <b>{{comment.date}}</b>
-        </p>
-        <p class = "in_coments_block">
+        <span class = "coments_user_block"
+          style="background-color:#ebebe0;padding:5px;padding-bottom:0px;border-radius: 6px;color:black;">
+            <b>{{ user.get_full_name|default:user.username }} </b> | <b>{{comment.date}}</b>
+        </span>
+        <p class = "in_coments_block"
+          style="background-color:#ebebe0;padding:5px;color:black;border-radius: 6px;">
             {{comment.comment}}
         </p>
         </div>
@@ -112,6 +201,40 @@
   </div>
     </div>
 </div>
+
+<!-- The Modal -->
+  <div class="modal fade" id="sendMessageModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <span>Send message to person who submited an ad...</span>
+          <button type="button" class="close" data-dismiss="modal">x</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+         <form action = "{% url 'send_mail'%}" method = 'post' enctype='multipart/ form-data'
+                  id = 'formSendMessage'>
+             {%csrf_token%}
+                  <label>Email(optional):</label></br>
+                  <input type = 'email' value = "" name = "mailFrom" size = "40"></br></br>
+                  <textarea rows = '3' cols = '100' name = "sendMail"
+                   style="min-width: 100%" required>
+                  </textarea></br></br>
+                  <input type = 'hidden' value = "" name ='email'>
+                  <input type = 'hidden' value = {{person.id}} name ="currentURL">
+                  <input type = 'submit' name='send' value='Send'> &nbsp;
+                  <input type = 'reset' value = 'Clear'>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal -->
+
+
 {% endblock content %}
 {% block footer %}
    <div class = "row" id = "footer">

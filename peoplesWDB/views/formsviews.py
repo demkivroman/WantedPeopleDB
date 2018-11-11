@@ -1,7 +1,6 @@
 from django.views.generic.base import TemplateView
 from ..forms.add_want_pers_form import AddWanPerson
 from ..forms.contact_form import ContactForm
-from ..forms.profile import profilePhoto
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
@@ -14,7 +13,6 @@ from ..models.wanted_person import WantedPerson
 from ..models.comment import Comment
 from ..util.util_func import util_main_searc, util_currId
 from django.http import JsonResponse
-import json
 import datetime
 
 import pdb
@@ -40,15 +38,9 @@ def sendMail(request):
             return HttpResponseRedirect(reverse('home'))
         else:
             message = "Message sent successfully"
-            st = request.POST.get('currentURL').strip()
-            arr = st.split("/")
-            del arr[-1]
-            sResult = []
-            for item in arr:
-                obj = WantedPerson.objects.get(pk=item)
-                sResult.append(obj)
-            return render(request, 'search_result.html', {'search_result': sResult,
-                                                          'perId': st})
+            messages.info(request,message)
+            st = request.POST.get('currentURL')
+            return HttpResponseRedirect(reverse('comment', kwargs = {'pk':st}))
 
 
 def contact_form(request):
@@ -99,7 +91,7 @@ def add_wanted_person(request):
             person.save()
 
             messages.success(request, 'Add successfully :)')
-            return HttpResponseRedirect(reverse('home'))
+            return HttpResponseRedirect(reverse('comment', kwargs = {'pk':person.id}))
 
 
     else:
@@ -108,13 +100,6 @@ def add_wanted_person(request):
 
 # function of searching in database
 def db_search(request):
-    if request.method == 'GET' and 'all' in request.GET:
-        allPer = request.GET['all']
-        if allPer:
-            arrPer = sorted(WantedPerson.objects.all(), key = lambda item: item.first_name.lower())
-            perId = util_currId(arrPer)
-            return render(request, 'search_result.html', {'search_result': arrPer,
-                                                          'perId': perId})
     data = request.GET['mainsearch'].strip()
     if data:
         search_result = sorted(util_main_searc(data), key = lambda item: item.first_name.lower())

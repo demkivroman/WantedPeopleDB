@@ -1,5 +1,4 @@
 from ..models.wanted_person import WantedPerson
-import pdb
 
 # function for seeking records in database
 def util_main_searc(param):
@@ -18,3 +17,11 @@ def util_currId(param):
     for item in param:
         perId += str(item.id) + "/"
     return perId
+
+# function for read .txt file from static url and return context
+def read_file(url):
+    f = open(url, 'r')
+    file_content = f.read()
+    f.close()
+    context = {'file_content': file_content}
+    return context
